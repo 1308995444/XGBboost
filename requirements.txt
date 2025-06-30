@@ -1,8 +1,7 @@
 streamlit==1.30.0
-scikit-learn==1.3.0  # 必须删除clust-learn，改用scikit-learn
+scikit-learn==1.6.1
 numpy==1.26.4
-pandas==2.1.3
-matplotlib==3.7.4
-xgboost==2.0.3  # 降级到稳定版本
-shap==0.44.1  # 降级到兼容版本
-joblib==1.3.2
+pandas==2.2.2
+matplotlib==3.9.2
+xgboost==2.0.3 
+shap==0.45.1
