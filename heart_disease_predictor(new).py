@@ -6,7 +6,7 @@ import shap
 import matplotlib.pyplot as plt
 
 # 加载模型
-model = joblib.load('XGB.pkl')
+model = joblib.load('xgbboost.pkl')
 
 feature_ranges = {
     'gender': {"type": "categorical", "options": [1, 2]},
