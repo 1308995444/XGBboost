@@ -40,7 +40,7 @@ feature_ranges = {
 }
 
 # 界面布局
-st.title("Depression Risk Prediction Model-Prediction Model with SHAP Visualization")
+st.title("Depression Risk-Prediction Model with SHAP Visualization")
 st.header("Enter the following feature values:")
 
 # 输入表单
