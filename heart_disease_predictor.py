@@ -21,9 +21,9 @@ feature_ranges = {
     'satlife': {"type": "categorical", "options": [1,2,3,4,5], "desc": "生活满意度/Life satisfaction (1-5: 非常不满意/Very dissatisfied 到 非常满意/Very satisfied)"},
     'sleep': {
         "type": "numerical", 
-        "min": 0.0, 
-        "max": 24.0, 
-        "default": 8.0, 
+        "min": 0, 
+        "max": 24, 
+        "default": 8, 
         "desc": "睡眠时长/Sleep duration (小时/hours)",
         "step": 0.1,
         "format": "%.1f"
@@ -75,8 +75,7 @@ if st.button("Predict"):
     # 结果显示
     text_en = f"Predicted probability: {probability:.2f}% ({'High risk' if predicted_class == 1 else 'Low risk'})"
     fig, ax = plt.subplots(figsize=(10,2))
-    ax.text(0.5, 0.7, text_en, 
-            fontsize=14, ha='center', va='center', fontname='Arial')
+    ax.text(0.5, 0.7, text_en, fontsize=14, ha='center', va='center', fontname='Arial')
     ax.axis('off')
     st.pyplot(fig)
 
