@@ -5,6 +5,7 @@ import pandas as pd
 import shap
 import matplotlib.pyplot as plt
 
+
 # 自定义CSS样式（确保输入框标签完整显示）
 st.markdown("""
 <style>
@@ -12,7 +13,7 @@ st.markdown("""
     div[data-testid="stNumberInput"] > label,
     div[data-testid="stSelectbox"] > label {
         white-space: nowrap;
-        min-width: 400px;
+        min-width: 700px;
         display: inline-block;
     }
     
@@ -22,7 +23,6 @@ st.markdown("""
     }
 </style>
 """, unsafe_allow_html=True)
-
 # 模型加载 Model Loading
 model = joblib.load('XGB.pkl')  
 
@@ -80,7 +80,6 @@ if st.button("Predict"):
 
     # 结果显示 Result Display
     text_en = f"Predicted probability: {probability:.2f}% ({'High risk' if predicted_class == 1 else 'Low risk'})"
-    text_cn = f"预测概率: {probability:.2f}% ({'高风险' if predicted_class == 1 else '低风险'})"
     
     fig, ax = plt.subplots(figsize=(10,2))
     ax.text(0.5, 0.7, text_en, 
