@@ -5,9 +5,14 @@ import pandas as pd
 import shap
 import matplotlib.pyplot as plt
 
-# 设置中文字体
-plt.rcParams['font.sans-serif'] = ['SimHei']  # 设置中文显示字体
-plt.rcParams['axes.unicode_minus'] = False  # 解决负号显示问题
+from matplotlib import font_manager
+try:
+    font_manager.fontManager.addfont('SimHei.ttf')  # 确保字体文件存在
+    plt.rcParams['font.sans-serif'] = ['SimHei']  # 设置中文字体
+    plt.rcParams['axes.unicode_minus'] = False  # 解决负号显示问题
+except:
+    st.warning("中文显示字体加载失败，将使用默认字体")
+
 
 # 模型加载 Model Loading
 model = joblib.load('XGB.pkl')  
