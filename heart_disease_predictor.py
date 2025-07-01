@@ -6,13 +6,6 @@ import shap
 import matplotlib.pyplot as plt
 from matplotlib import font_manager
 
-# 设置中文字体
-try:
-    font_manager.fontManager.addfont('SimHei.ttf')
-    plt.rcParams['font.sans-serif'] = ['SimHei']
-    plt.rcParams['axes.unicode_minus'] = False
-except:
-    st.warning("中文显示字体加载失败，将使用默认字体")
 
 # 模型加载
 model = joblib.load('XGB.pkl')
@@ -47,7 +40,7 @@ feature_ranges = {
 }
 
 # 界面布局
-st.title("Prediction Model with SHAP Visualization")
+st.title("Depression Risk Prediction Model-Prediction Model with SHAP Visualization")
 st.header("Enter the following feature values:")
 
 # 输入表单
@@ -81,7 +74,6 @@ if st.button("Predict"):
 
     # 结果显示
     text_en = f"Predicted probability: {probability:.2f}% ({'High risk' if predicted_class == 1 else 'Low risk'})"
-    text_cn = f"预测概率: {probability:.2f}% ({'高风险' if predicted_class == 1 else '低风险'})"
     
     fig, ax = plt.subplots(figsize=(10,2))
     ax.text(0.5, 0.7, text_en, 
@@ -95,7 +87,7 @@ if st.button("Predict"):
     explainer = shap.TreeExplainer(model)
     shap_values = explainer.shap_values(pd.DataFrame([feature_values], columns=feature_ranges.keys()))
     
-    st.subheader("特征影响分析/Feature Impact Analysis")
+    st.subheader("Feature Impact Analysis")
     fig, ax = plt.subplots(figsize=(12,4))
     if isinstance(shap_values, list):
         shap.plots.force(
