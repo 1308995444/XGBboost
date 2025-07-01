@@ -81,7 +81,7 @@ if st.button("Predict"):
     st.pyplot(fig)
 
     # SHAP解释
- explainer = shap.TreeExplainer(model)
+    explainer = shap.TreeExplainer(model)
     shap_values = explainer.shap_values(pd.DataFrame([feature_values], columns=feature_ranges.keys()))
     
     if isinstance(shap_values, list):
