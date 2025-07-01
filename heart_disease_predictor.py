@@ -56,7 +56,7 @@ feature_ranges = {
     'hear': {"type": "categorical", "options": [1,2,3,4,5], "desc": "听力/Hearing"},
     
     # 教育程度 (1-4: 小学/Primary 到 大学/University)
-    'edu': {"type": "categorical", "options": [1("小学以下"),2("小学"),3("中学"),4("中学以上")], "desc": "教育程度/Education level"},
+    'edu': {"type": "categorical", "options": [("1-小学以下"),("2-小学"),("3-中学"),("4-中学以上")], "desc": "教育程度/Education level"},
     
     # 养老金 (0:无/No, 1:有/Yes)
     'pension': {"type": "categorical", "options": [0, 1], "desc": "养老保险/Pension"},
