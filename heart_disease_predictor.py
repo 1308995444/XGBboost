@@ -62,13 +62,19 @@ if st.button("Predict"):
     probability = predicted_proba[predicted_class] * 100
 
     # 结果显示 Result Display
+
     text_en = f"Predicted probability: {probability:.2f}% ({'High risk' if predicted_class == 1 else 'Low risk'})"
     text_cn = f"预测概率: {probability:.2f}% ({'高风险' if predicted_class == 1 else '低风险'})"
+
+# 设置中文字体
+    plt.rcParams['font.sans-serif'] = ['SimHei']  # 设置中文显示字体
+    plt.rcParams['axes.unicode_minus'] = False  # 解决负号显示问题
+
     fig, ax = plt.subplots(figsize=(10,2))
     ax.text(0.5, 0.7, text_en, 
-            fontsize=14, ha='center', va='center', fontname='Arial')
+        fontsize=14, ha='center', va='center', fontname='Arial')
     ax.text(0.5, 0.3, text_cn,
-            fontsize=14, ha='center', va='center', fontname='Arial')
+        fontsize=14, ha='center', va='center', fontname='SimHei')
     ax.axis('off')
     st.pyplot(fig)
 
