@@ -6,23 +6,6 @@ import shap
 import matplotlib.pyplot as plt
 
 
-# 自定义CSS样式（确保输入框标签完整显示）
-st.markdown("""
-<style>
-    /* 调整所有输入框标签的样式 */
-    div[data-testid="stNumberInput"] > label,
-    div[data-testid="stSelectbox"] > label {
-        white-space: nowrap;
-        min-width: 700px;
-        display: inline-block;
-    }
-    
-    /* 调整输入框容器宽度 */
-    .stNumberInput, .stSelectbox {
-        min-width: 450px;
-    }
-</style>
-""", unsafe_allow_html=True)
 # 模型加载 Model Loading
 model = joblib.load('XGB.pkl')  
 
@@ -79,16 +62,16 @@ if st.button("Predict"):
     probability = predicted_proba[predicted_class] * 100
 
     # 结果显示 Result Display
-    text_en = f"Predicted probability: {probability:.2f}% ({'High risk' if predicted_class == 1 else 'Low risk'})"
-    
-    fig, ax = plt.subplots(figsize=(10,2))
-    ax.text(0.5, 0.7, text_en, 
-            fontsize=14, ha='center', va='center', fontname='Arial')
-    ax.text(0.5, 0.3, text_cn,
-            fontsize=14, ha='center', va='center', fontname='SimHei')
+    text = f"Based on feature values, predicted possibility of XGB is {probability:.2f}%" 
+    fig, ax = plt.subplots(figsize=(8,1))
+    ax.text(
+        0.5, 0.5, text, 
+        fontsize=16,
+        ha='center', va='center',
+        fontname='Times New Roman',
+        transform=ax.transAxes)
     ax.axis('off')
     st.pyplot(fig)
-
     # SHAP解释 SHAP Explanation
     explainer = shap.TreeExplainer(model)
     shap_values = explainer.shap_values(pd.DataFrame([feature_values], columns=feature_ranges.keys()))
