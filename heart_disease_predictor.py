@@ -5,14 +5,6 @@ import pandas as pd
 import shap
 import matplotlib.pyplot as plt
 
-from matplotlib import font_manager
-try:
-    font_manager.fontManager.addfont('SimHei.ttf')  # 确保字体文件存在
-    plt.rcParams['font.sans-serif'] = ['SimHei']  # 设置中文字体
-    plt.rcParams['axes.unicode_minus'] = False  # 解决负号显示问题
-except:
-    st.warning("中文显示字体加载失败，将使用默认字体")
-
 
 # 模型加载 Model Loading
 model = joblib.load('XGB.pkl')  
@@ -26,7 +18,7 @@ feature_ranges = {
     'digeste': {"type": "categorical", "options": [0, 1], "desc": "消化系统问题/Digestive issues (0:无/No, 1:有/Yes)"},
     'retire': {"type": "categorical", "options": [0, 1], "desc": "退休状态/Retirement status (0:未退休/Not retired, 1:已退休/Retired)"},
     'satlife': {"type": "categorical", "options": [1,2,3,4,5], "desc": "生活满意度/Life satisfaction (1-5: 非常不满意/Very dissatisfied 到 非常满意/Very satisfied)"},
-    'sleep': {"type": "numerical", "min": 0.000, "max": 24.000, "default": 8.000, "desc": "睡眠时长/Sleep duration (小时/hours)"},
+    'sleep': {"type": "numerical", "min": 0.0, "max": 24.0, "default": 8.0, "desc": "睡眠时长/Sleep duration (小时/hours)"},
     'disability': {"type": "categorical", "options": [0, 1], "desc": "残疾/Disability (0:无/No, 1:有/Yes)"},
     'internet': {"type": "categorical", "options": [0, 1], "desc": "互联网使用/Internet use (0:不使用/No, 1:使用/Yes)"},
     'hope': {"type": "categorical", "options": [1,2,3,4], "desc": "希望程度/Hope level (1-4: 很低/Very low 到 很高/Very high)"},
@@ -72,7 +64,6 @@ if st.button("Predict"):
     # 结果显示 Result Display
 
     text_en = f"Predicted probability: {probability:.2f}% ({'High risk' if predicted_class == 1 else 'Low risk'})"
-    text_cn = f"预测概率: {probability:.2f}% ({'高风险' if predicted_class == 1 else '低风险'})"
 
     fig, ax = plt.subplots(figsize=(10,2))
     ax.text(0.5, 0.7, text_en, 
@@ -95,7 +86,7 @@ if st.button("Predict"):
 
     feature_df = pd.DataFrame([feature_values], columns=feature_ranges.keys())
 
-    st.subheader("特征影响分析/Feature Impact Analysis")
+    st.subheader("Feature Impact Analysis")
     plt.figure()
     shap_plot = shap.force_plot(
         expected_value,
