@@ -5,6 +5,9 @@ import pandas as pd
 import shap
 import matplotlib.pyplot as plt
 
+# 设置中文字体
+plt.rcParams['font.sans-serif'] = ['SimHei']  # 设置中文显示字体
+plt.rcParams['axes.unicode_minus'] = False  # 解决负号显示问题
 
 # 模型加载 Model Loading
 model = joblib.load('XGB.pkl')  
@@ -65,10 +68,6 @@ if st.button("Predict"):
 
     text_en = f"Predicted probability: {probability:.2f}% ({'High risk' if predicted_class == 1 else 'Low risk'})"
     text_cn = f"预测概率: {probability:.2f}% ({'高风险' if predicted_class == 1 else '低风险'})"
-
-# 设置中文字体
-    plt.rcParams['font.sans-serif'] = ['SimHei']  # 设置中文显示字体
-    plt.rcParams['axes.unicode_minus'] = False  # 解决负号显示问题
 
     fig, ax = plt.subplots(figsize=(10,2))
     ax.text(0.5, 0.7, text_en, 
