@@ -52,7 +52,7 @@ feature_range = {
 
 # 4. 界面布局优化
 st.title("🧠 Prediction Model with SHAP Visualization")
-st.markdown(""Enter the following feature values:", unsafe_allow_html=True)
+st.markdown("Enter the following feature values:", unsafe_allow_html=True)
 
 # 5. 动态生成输入表单（两列布局）
 feature_values = []
