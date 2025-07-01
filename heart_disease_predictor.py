@@ -26,7 +26,7 @@ feature_ranges = {
     'arthre': {"type": "categorical", "options": [0, 1], "desc": "关节炎/Arthritis"},
     
     # 消化系统问题 (0:无/No, 1:有/Yes) 
-    'digeste': {"type": "categorical", "options": [0, 1], "desc": "消化问题/Digestive issues"},
+    'digeste': {"type": "categorical", "options": [0, 1], "desc": "消化系统问题/Digestive issues"},
     
     # 退休状态 (0:未退休/Not retired, 1:已退休/Retired)
     'retire': {"type": "categorical", "options": [0, 1], "desc": "退休状态/Retirement status"},
@@ -50,16 +50,16 @@ feature_ranges = {
     'fall_down': {"type": "categorical", "options": [0, 1], "desc": "跌倒史/Fall history"},
     
     # 近距离视力 (1-5: 很差/Very poor 到 很好/Very good)
-    'eyesight_close': {"type": "categorical", "options": [1,2,3,4,5], "desc": "近距离视力/Near vision"},
+    'eyesight_close': {"type": "categorical", "options": [1,2,3,4,5], "desc": "视力/Near vision"},
     
     # 听力 (1-5: 很差/Very poor 到 很好/Very good)
     'hear': {"type": "categorical", "options": [1,2,3,4,5], "desc": "听力/Hearing"},
     
     # 教育程度 (1-4: 小学/Primary 到 大学/University)
-    'edu': {"type": "categorical", "options": [1,2,3,4], "desc": "教育程度/Education level"},
+    'edu': {"type": "categorical", "options": [1("小学以下"),2("小学"),3("中学"),4("中学以上")], "desc": "教育程度/Education level"},
     
     # 养老金 (0:无/No, 1:有/Yes)
-    'pension': {"type": "categorical", "options": [0, 1], "desc": "养老金/Pension"},
+    'pension': {"type": "categorical", "options": [0, 1], "desc": "养老保险/Pension"},
     
     # 慢性疼痛 (0:无/No, 1:有/Yes)
     'pain': {"type": "categorical", "options": [0, 1], "desc": "慢性疼痛/Chronic pain"}
