@@ -21,9 +21,9 @@ feature_ranges = {
     'satlife': {"type": "categorical", "options": [1,2,3,4,5], "desc": "生活满意度/Life satisfaction (1-5: 非常不满意/Very dissatisfied 到 非常满意/Very satisfied)"},
     'sleep': {
         "type": "numerical", 
-        "min": 0, 
-        "max": 24, 
-        "default": 8, 
+        "min": 0.0, 
+        "max": 24.0, 
+        "default": 8.0, 
         "desc": "睡眠时长/Sleep duration (小时/hours)",
         "step": 0.1,
         "format": "%.1f"
@@ -75,33 +75,32 @@ if st.button("Predict"):
     # 结果显示
     text_en = f"Predicted probability: {probability:.2f}% ({'High risk' if predicted_class == 1 else 'Low risk'})"
     fig, ax = plt.subplots(figsize=(10,2))
-    ax.text(0.5, 0.7, text_en, fontsize=14, ha='center', va='center', fontname='Arial')
+    ax.text(0.5, 0.7, text_en, 
+            fontsize=14, ha='center', va='center', fontname='Arial')
     ax.axis('off')
     st.pyplot(fig)
 
     # SHAP解释
-    explainer = shap.TreeExplainer(model)
+ explainer = shap.TreeExplainer(model)
     shap_values = explainer.shap_values(pd.DataFrame([feature_values], columns=feature_ranges.keys()))
     
-    st.subheader("Feature Impact Analysis")
-    fig, ax = plt.subplots(figsize=(12,4))
     if isinstance(shap_values, list):
-        shap.plots.force(
-            explainer.expected_value[predicted_class],
-            shap_values[predicted_class][0],
-            pd.DataFrame([feature_values], columns=feature_ranges.keys()).iloc[0],
-            matplotlib=True,
-            show=False,
-            ax=ax
-        )
+
+        shap_values_class = shap_values[predicted_class][0]
+        expected_value = explainer.expected_value[predicted_class]
     else:
-        shap.plots.force(
-            explainer.expected_value,
-            shap_values[0],
-            pd.DataFrame([feature_values], columns=feature_ranges.keys()).iloc[0],
-            matplotlib=True,
-            show=False,
-            ax=ax
-        )
-    st.pyplot(fig)
-    plt.close(fig)
+
+        shap_values_class = shap_values[0]
+        expected_value = explainer.expected_value
+
+    feature_df = pd.DataFrame([feature_values], columns=feature_ranges.keys())
+
+    plt.figure()
+    shap_plot = shap.force_plot(
+        expected_value,
+        shap_values_class,
+        feature_df,
+        matplotlib=True,
+        show=False
+    )
+    st.pyplot(plt.gcf())
