@@ -5,134 +5,46 @@ import pandas as pd
 import shap
 import matplotlib.pyplot as plt
 
+# 自定义CSS样式（确保输入框标签完整显示）
+st.markdown("""
+<style>
+    /* 调整所有输入框标签的样式 */
+    div[data-testid="stNumberInput"] > label,
+    div[data-testid="stSelectbox"] > label {
+        white-space: nowrap;
+        min-width: 400px;
+        display: inline-block;
+    }
+    
+    /* 调整输入框容器宽度 */
+    .stNumberInput, .stSelectbox {
+        min-width: 450px;
+    }
+</style>
+""", unsafe_allow_html=True)
+
 # 模型加载 Model Loading
-# XGBoost模型路径 Path to XGBoost model
 model = joblib.load('XGB.pkl')  
 
 # 特征定义 Feature Definition
-# 包含所有特征及其取值范围/选项的字典 
-# Dictionary containing all features and their value ranges/options
 feature_ranges = {
-    # 性别 (1:男/Male, 2:女/Female)
-    'gender': {
-        "type": "categorical", 
-        "options": [1, 2], 
-        "desc": "性别/Gender<br>(1: 男/Male, 2: 女/Female)"
-    },
-    
-    # 自评健康 (1-5: 很差/Very poor 到 很好/Very good)
-    'srh': {
-        "type": "categorical", 
-        "options": [1,2,3,4,5], 
-        "desc": "自评健康/Self-rated health<br>(1: 很差/Very poor, 2: 差/Poor, 3: 一般/Fair, 4: 好/Good, 5: 很好/Very good)"
-    },
-    
-    # 日常活动能力 (0-6: 无/None 到 完全依赖/Complete dependence)
-    'adlab_c': {
-        "type": "categorical", 
-        "options": [0,1,2,3,4,5,6], 
-        "desc": "日常活动能力/Activities of daily living<br>(0: 无/None, 6: 完全依赖/Complete dependence)"
-    },
-    
-    # 关节炎 (0:无/No, 1:有/Yes)
-    'arthre': {
-        "type": "categorical", 
-        "options": [0, 1], 
-        "desc": "关节炎/Arthritis<br>(0: 无/No, 1: 有/Yes)"
-    },
-    
-    # 消化系统问题 (0:无/No, 1:有/Yes)
-    'digeste': {
-        "type": "categorical", 
-        "options": [0, 1], 
-        "desc": "消化系统问题/Digestive issues<br>(0: 无/No, 1: 有/Yes)"
-    },
-    
-    # 退休状态 (0:未退休/Not retired, 1:已退休/Retired)
-    'retire': {
-        "type": "categorical", 
-        "options": [0, 1], 
-        "desc": "退休状态/Retirement status<br>(0: 未退休/Not retired, 1: 已退休/Retired)"
-    },
-    
-    # 生活满意度 (1-5: 非常不满意/Very dissatisfied 到 非常满意/Very satisfied)
-    'satlife': {
-        "type": "categorical", 
-        "options": [1,2,3,4,5], 
-        "desc": "生活满意度/Life satisfaction<br>(1: 非常不满意/Very dissatisfied, 5: 非常满意/Very satisfied)"
-    },
-    
-    # 睡眠时长 (小时/hours)
-    'sleep': {
-        "type": "numerical", 
-        "min": 0.000, 
-        "max": 24.000, 
-        "default": 8.000, 
-        "desc": "睡眠时长/Sleep duration (小时/hours)"
-    },
-    
-    # 残疾状况 (0:无/No, 1:有/Yes)
-    'disability': {
-        "type": "categorical", 
-        "options": [0, 1], 
-        "desc": "残疾/Disability<br>(0: 无/No, 1: 有/Yes)"
-    },
-    
-    # 互联网使用 (0:不使用/No, 1:使用/Yes)
-    'internet': {
-        "type": "categorical", 
-        "options": [0, 1], 
-        "desc": "互联网使用/Internet use<br>(0: 不使用/No, 1: 使用/Yes)"
-    },
-    
-    # 希望程度 (1-4: 很低/Very low 到 很高/Very high)
-    'hope': {
-        "type": "categorical", 
-        "options": [1,2,3,4], 
-        "desc": "希望程度/Hope level<br>(1: 很低/Very low, 4: 很高/Very high)"
-    },
-    
-    # 跌倒史 (0:无/No, 1:有/Yes)
-    'fall_down': {
-        "type": "categorical", 
-        "options": [0, 1], 
-        "desc": "跌倒史/Fall history<br>(0: 无/No, 1: 有/Yes)"
-    },
-    
-    # 近距离视力 (1-5: 很差/Very poor 到 很好/Very good)
-    'eyesight_close': {
-        "type": "categorical", 
-        "options": [1,2,3,4,5], 
-        "desc": "视力/Near vision<br>(1: 很差/Very poor, 5: 很好/Very good)"
-    },
-    
-    # 听力 (1-5: 很差/Very poor 到 很好/Very good)
-    'hear': {
-        "type": "categorical", 
-        "options": [1,2,3,4,5], 
-        "desc": "听力/Hearing<br>(1: 很差/Very poor, 5: 很好/Very good)"
-    },
-    
-    # 教育程度 (1-4: 小学/Primary 到 大学/University)
-    'edu': {
-        "type": "categorical", 
-        "options": [1,2,3,4],
-        "desc": "教育程度/Education level<br>(1: 小学以下/Below Primary, 2: 小学/Primary, 3: 中学/Secondary, 4: 中学以上/Above Secondary)"
-    },
-    
-    # 养老金 (0:无/No, 1:有/Yes)
-    'pension': {
-        "type": "categorical", 
-        "options": [0, 1], 
-        "desc": "养老保险/Pension<br>(0: 无/No, 1: 有/Yes)"
-    },
-    
-    # 慢性疼痛 (0:无/No, 1:有/Yes)
-    'pain': {
-        "type": "categorical", 
-        "options": [0, 1], 
-        "desc": "慢性疼痛/Chronic pain<br>(0: 无/No, 1: 有/Yes)"
-    }
+    'gender': {"type": "categorical", "options": [1, 2], "desc": "性别/Gender (1:男/Male, 2:女/Female)"},
+    'srh': {"type": "categorical", "options": [1,2,3,4,5], "desc": "自评健康/Self-rated health (1-5: 很差/Very poor 到 很好/Very good)"},
+    'adlab_c': {"type": "categorical", "options": [0,1,2,3,4,5,6], "desc": "日常活动能力/Activities of daily living (0-6: 无/None 到 完全依赖/Complete dependence)"},
+    'arthre': {"type": "categorical", "options": [0, 1], "desc": "关节炎/Arthritis (0:无/No, 1:有/Yes)"},
+    'digeste': {"type": "categorical", "options": [0, 1], "desc": "消化系统问题/Digestive issues (0:无/No, 1:有/Yes)"},
+    'retire': {"type": "categorical", "options": [0, 1], "desc": "退休状态/Retirement status (0:未退休/Not retired, 1:已退休/Retired)"},
+    'satlife': {"type": "categorical", "options": [1,2,3,4,5], "desc": "生活满意度/Life satisfaction (1-5: 非常不满意/Very dissatisfied 到 非常满意/Very satisfied)"},
+    'sleep': {"type": "numerical", "min": 0.000, "max": 24.000, "default": 8.000, "desc": "睡眠时长/Sleep duration (小时/hours)"},
+    'disability': {"type": "categorical", "options": [0, 1], "desc": "残疾/Disability (0:无/No, 1:有/Yes)"},
+    'internet': {"type": "categorical", "options": [0, 1], "desc": "互联网使用/Internet use (0:不使用/No, 1:使用/Yes)"},
+    'hope': {"type": "categorical", "options": [1,2,3,4], "desc": "希望程度/Hope level (1-4: 很低/Very low 到 很高/Very high)"},
+    'fall_down': {"type": "categorical", "options": [0, 1], "desc": "跌倒史/Fall history (0:无/No, 1:有/Yes)"},
+    'eyesight_close': {"type": "categorical", "options": [1,2,3,4,5], "desc": "视力/Near vision (1-5: 很差/Very poor 到 很好/Very good)"},
+    'hear': {"type": "categorical", "options": [1,2,3,4,5], "desc": "听力/Hearing (1-5: 很差/Very poor 到 很好/Very good)"},
+    'edu': {"type": "categorical", "options": [1,2,3,4], "desc": "教育程度/Education level (1:小学以下/Below Primary, 2:小学/Primary, 3:中学/Secondary, 4:中学以上/Above Secondary)"},
+    'pension': {"type": "categorical", "options": [0, 1], "desc": "养老保险/Pension (0:无/No, 1:有/Yes)"},
+    'pain': {"type": "categorical", "options": [0, 1], "desc": "慢性疼痛/Chronic pain (0:无/No, 1:有/Yes)"}
 }
 
 # 界面布局 UI Layout
@@ -142,18 +54,19 @@ st.header("Enter the following feature values:")
 # 输入表单 Input Form
 feature_values = []
 for feature, properties in feature_ranges.items():
-    label = f"{properties['desc']} ({feature})"
     if properties["type"] == "numerical":
         value = st.number_input(
-            label=f"{label} ({properties['min']}-{properties['max']})", 
+            label=properties["desc"],
             min_value=float(properties["min"]), 
             max_value=float(properties["max"]), 
             value=float(properties["default"]),
+            key=f"num_{feature}"
         )
-    elif properties["type"] == "categorical":
+    else:
         value = st.selectbox(
-            label=label,
+            label=properties["desc"],
             options=properties["options"],
+            key=f"cat_{feature}"
         )
     feature_values.append(value)
 
