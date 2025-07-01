@@ -49,7 +49,6 @@ feature_config = {
     'pension': {"type": "categorical", "options": [0, 1]},
     'pain': {"type": "categorical", "options": [0, 1]},
 }
-}
 
 # 4. 界面布局优化
 st.title(" Prediction Model with SHAP Visualization")
