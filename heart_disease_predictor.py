@@ -14,7 +14,7 @@ model = joblib.load('XGB.pkl')
 # Dictionary containing all features and their value ranges/options
 feature_ranges = {
     # 性别 (1:男/Male, 2:女/Female)
-    'gender': {"type": "categorical", "options": [1, 2], "desc": "性别/Gender"},
+    'gender': {"type": "categorical", "options": [1, 2], "desc": "性别/Gender\n(1:男/Male, 2:女/Female)"},
     
     # 自评健康 (1-5: 很差/Very poor 到 很好/Very good)
     'srh': {"type": "categorical", "options": [1,2,3,4,5], "desc": "自评健康/Self-rated health"},
@@ -23,13 +23,13 @@ feature_ranges = {
     'adlab_c': {"type": "categorical", "options": [0,1,2,3,4,5,6], "desc": "日常活动能力/Activities of daily living"},
     
     # 关节炎 (0:无/No, 1:有/Yes)
-    'arthre': {"type": "categorical", "options": [0, 1], "desc": "关节炎/Arthritis"},
+    'arthre': {"type": "categorical", "options": [0, 1], "desc": "关节炎/Arthritis\n(0-无/No, 1-有/Yes)"},
     
     # 消化系统问题 (0:无/No, 1:有/Yes) 
-    'digeste': {"type": "categorical", "options": [0, 1], "desc": "消化系统问题/Digestive issues"},
+    'digeste': {"type": "categorical", "options": [0, 1], "desc": "消化系统问题/Digestive issues\n(0-无/No, 1-有/Yes)"},
     
     # 退休状态 (0:未退休/Not retired, 1:已退休/Retired)
-    'retire': {"type": "categorical", "options": [0, 1], "desc": "退休状态/Retirement status"},
+    'retire': {"type": "categorical", "options": [0, 1], "desc": "退休状态/Retirement status\n(0-未退休/Not retired, 1-已退休/Retired)"},
     
     # 生活满意度 (1-5: 非常不满意/Very dissatisfied 到 非常满意/Very satisfied)
     'satlife': {"type": "categorical", "options": [1,2,3,4,5], "desc": "生活满意度/Life satisfaction"},
@@ -38,16 +38,16 @@ feature_ranges = {
     'sleep': {"type": "numerical", "min": 0.000, "max": 24.000, "default": 8.000, "desc": "睡眠时长/Sleep duration"},
     
     # 残疾状况 (0:无/No, 1:有/Yes)
-    'disability': {"type": "categorical", "options": [0, 1], "desc": "残疾/Disability"},
+    'disability': {"type": "categorical", "options": [0, 1], "desc": "残疾/Disability\n(0-无/No, 1-有/Yes)"},
     
     # 互联网使用 (0:不使用/No, 1:使用/Yes)
-    'internet': {"type": "categorical", "options": [0, 1], "desc": "互联网使用/Internet use"},
+    'internet': {"type": "categorical", "options": [0, 1], "desc": "互联网使用/Internet use\n(0-无/No, 1-有/Yes)"},
     
     # 希望程度 (1-4: 很低/Very low 到 很高/Very high)
     'hope': {"type": "categorical", "options": [1,2,3,4], "desc": "希望程度/Hope level"},
     
     # 跌倒史 (0:无/No, 1:有/Yes)
-    'fall_down': {"type": "categorical", "options": [0, 1], "desc": "跌倒史/Fall history"},
+    'fall_down': {"type": "categorical", "options": [0, 1], "desc": "跌倒史/Fall history\n(0-无/No, 1-有/Yes)"},
     
     # 近距离视力 (1-5: 很差/Very poor 到 很好/Very good)
     'eyesight_close': {"type": "categorical", "options": [1,2,3,4,5], "desc": "视力/Near vision"},
@@ -56,13 +56,13 @@ feature_ranges = {
     'hear': {"type": "categorical", "options": [1,2,3,4,5], "desc": "听力/Hearing"},
     
     # 教育程度 (1-4: 小学/Primary 到 大学/University)
-    'edu': {"type": "categorical", "options": [1,2,3,4],"desc": "教育程度/Education level (1-小学以下/Below Primary, 2-小学/Primary, 3-中学/Secondary, 4-中学以上/Above Secondary)"},
+    'edu': {"type": "categorical", "options": [1,2,3,4],"desc": "教育程度/Education level\n(1-小学以下/Below Primary, 2-小学/Primary, 3-中学/Secondary, 4-中学以上/Above Secondary)"},
     
     # 养老金 (0:无/No, 1:有/Yes)
-    'pension': {"type": "categorical", "options": [0, 1], "desc": "养老保险/Pension"},
+    'pension': {"type": "categorical", "options": [0, 1], "desc": "养老保险/Pension\n(0-无/No, 1-有/Yes)"},
     
     # 慢性疼痛 (0:无/No, 1:有/Yes)
-    'pain': {"type": "categorical", "options": [0, 1], "desc": "慢性疼痛/Chronic pain"}
+    'pain': {"type": "categorical", "options": [0, 1], "desc": "慢性疼痛/Chronic pain\n(0-无/No, 1-有/Yes)"}
 }
 
 # 界面布局 UI Layout
