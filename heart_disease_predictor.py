@@ -74,12 +74,9 @@ if st.button("Predict"):
 
     # 结果显示
     text_en = f"Predicted probability: {probability:.2f}% ({'High risk' if predicted_class == 1 else 'Low risk'})"
-    
     fig, ax = plt.subplots(figsize=(10,2))
     ax.text(0.5, 0.7, text_en, 
             fontsize=14, ha='center', va='center', fontname='Arial')
-    ax.text(0.5, 0.3, text_cn,
-            fontsize=14, ha='center', va='center', fontname='SimHei')
     ax.axis('off')
     st.pyplot(fig)
 
