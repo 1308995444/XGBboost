@@ -68,12 +68,12 @@ feature_ranges = {
     },
     "chronic_disease_count": {
         "type": "numerical",
-        "min": 0,
-        "max": 50,
-        "default": 0,
+        "min": 0.0,
+        "max": 50.0,
+        "default": 0.0,
         "desc": "慢性病数量 / Number of chronic diseases (integer)",
-        "step": 1,
-        "format": "%d"
+        "step": 1.0,
+        "format": "%.0f"
     },
     "hearing_ability": {
         "type": "categorical",
@@ -124,7 +124,7 @@ for feature, properties in feature_ranges.items():
             min_value=float(properties["min"]),
             max_value=float(properties["max"]),
             value=float(properties["default"]),
-            step=properties.get("step", 1.0),
+            step=float(properties.get("step", 1.0)),
             format=properties.get("format", "%f"),
             key=f"num_{feature}"
         )
