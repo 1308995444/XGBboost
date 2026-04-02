@@ -188,10 +188,9 @@ if st.button("Predict / 预测"):
     probability = predicted_proba[predicted_class] * 100
 
     risk_label_en = "High risk" if predicted_class == 1 else "Low risk"
-    risk_label_cn = "高风险" if predicted_class == 1 else "低风险"
+
 
     text_en = f"Predicted probability: {probability:.2f}% ({risk_label_en})"
-    text_cn = f"预测概率：{probability:.2f}%（{risk_label_cn}）"
 
     fig, ax = plt.subplots(figsize=(10, 2))
     ax.text(
