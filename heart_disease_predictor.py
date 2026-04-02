@@ -195,7 +195,7 @@ if st.button("Predict / 预测"):
     fig, ax = plt.subplots(figsize=(10, 2))
     ax.text(
         0.5, 0.7,
-        text_en + "\n" + text_cn,
+        text_en + "\n",
         fontsize=14,
         ha='center',
         va='center'
