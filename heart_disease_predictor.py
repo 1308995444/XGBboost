@@ -4,40 +4,84 @@ import numpy as np
 import pandas as pd
 import shap
 import matplotlib.pyplot as plt
+import catboost
 from matplotlib import font_manager
 
 
 # 模型加载
-model = joblib.load('XGB.pkl')
+model = joblib.load('cat.pkl')
 
 # 特征定义
 feature_ranges = {
-    'gender': {"type": "categorical", "options": [1, 2], "desc": "性别/Gender (1:男/Male, 2:女/Female)"},
-    'srh': {"type": "categorical", "options": [1,2,3,4,5], "desc": "自评健康/Self-rated health (1-5: 很差/Very poor 到 很好/Very good)"},
-    'adlab_c': {"type": "categorical", "options": [0,1,2,3,4,5,6], "desc": "日常活动能力/Activities of daily living (0-6: 无/None 到 完全依赖/Complete dependence)"},
-    'arthre': {"type": "categorical", "options": [0, 1], "desc": "关节炎/Arthritis (0:无/No, 1:有/Yes)"},
-    'digeste': {"type": "categorical", "options": [0, 1], "desc": "消化系统问题/Digestive issues (0:无/No, 1:有/Yes)"},
-    'retire': {"type": "categorical", "options": [0, 1], "desc": "退休状态/Retirement status (0:未退休/Not retired, 1:已退休/Retired)"},
-    'satlife': {"type": "categorical", "options": [1,2,3,4,5], "desc": "生活满意度/Life satisfaction (1-5: 非常不满意/Very dissatisfied 到 非常满意/Very satisfied)"},
-    'sleep': {
-        "type": "numerical", 
-        "min": 0.0, 
-        "max": 24.0, 
-        "default": 8.0, 
-        "desc": "睡眠时长/Sleep duration (小时/hours)",
+    "gender": {
+        "type": "categorical",
+        "options": [0, 1],
+        "desc": "性别/Gender (0:女/Female, 1:男/Male)"
+    },
+    "gastric_disease": {
+        "type": "categorical",
+        "options": [0, 1],
+        "desc": "胃病/Gastric disease (0:无/No, 1:有/Yes)"
+    },
+    "pain": {
+        "type": "categorical",
+        "options": [0, 1],
+        "desc": "慢性疼痛/Chronic pain (0:无/No, 1:有/Yes)"
+    },
+    "sleep_duration_night": {
+        "type": "numerical",
+        "min": 0.0,
+        "max": 24.0,
+        "default": 8.0,
+        "desc": "睡眠时间/Sleep duration at night (hours)",
         "step": 0.1,
         "format": "%.1f"
     },
-    'disability': {"type": "categorical", "options": [0, 1], "desc": "残疾/Disability (0:无/No, 1:有/Yes)"},
-    'internet': {"type": "categorical", "options": [0, 1], "desc": "互联网使用/Internet use (0:不使用/No, 1:使用/Yes)"},
-    'hope': {"type": "categorical", "options": [1,2,3,4], "desc": "希望程度/Hope level (1-4: 很低/Very low 到 很高/Very high)"},
-    'fall_down': {"type": "categorical", "options": [0, 1], "desc": "跌倒史/Fall history (0:无/No, 1:有/Yes)"},
-    'eyesight_close': {"type": "categorical", "options": [1,2,3,4,5], "desc": "视力/Near vision (1-5: 很差/Very poor 到 很好/Very good)"},
-    'hear': {"type": "categorical", "options": [1,2,3,4,5], "desc": "听力/Hearing (1-5: 很差/Very poor 到 很好/Very good)"},
-    'edu': {"type": "categorical", "options": [1,2,3,4], "desc": "教育程度/Education level (1:小学以下/Below Primary, 2:小学/Primary, 3:中学/Secondary, 4:中学以上/Above Secondary)"},
-    'pension': {"type": "categorical", "options": [0, 1], "desc": "养老保险/Pension (0:无/No, 1:有/Yes)"},
-    'pain': {"type": "categorical", "options": [0, 1], "desc": "慢性疼痛/Chronic pain (0:无/No, 1:有/Yes)"}
+    "retirement_status": {
+        "type": "categorical",
+        "options": [0, 1],
+        "desc": "退休状态/Retirement status (0:未退休/Not retired, 1:已退休/Retired)"
+    },
+    "self_rated_health": {
+        "type": "categorical",
+        "options": [1, 2, 3, 4, 5],
+        "desc": "自评健康/Self-rated health (1-5: 很差/Very poor 到 很好/Very good)"
+    },
+    "adl_disability": {
+        "type": "categorical",
+        "options": [0, 1, 2, 3, 4, 5, 6],
+        "desc": "日常生活活动障碍/ADL disability (0-6: 无/None 到 完全依赖/Complete dependence)"
+    },
+    "future_hope": {
+        "type": "categorical",
+        "options": [1, 2, 3, 4],
+        "desc": "对未来的希望/Future hope (1-4: 很低/Very low 到 很高/Very high)"
+    },
+    "life_satisfaction": {
+        "type": "categorical",
+        "options": [1, 2, 3, 4, 5],
+        "desc": "生活满意度/Life satisfaction (1-5: 非常不满意/Very dissatisfied 到 非常满意/Very satisfied)"
+    },
+    "education_level": {
+        "type": "categorical",
+        "options": [1, 2, 3, 4],
+        "desc": "教育程度/Education level (1:小学以下/Below Primary, 2:小学/Primary, 3:中学/Secondary, 4:中学以上/Above Secondary)"
+    },
+    "chronic_disease_count": {
+        "type": "numerical",
+        "min": 0,
+        "max": 50,
+        "default": 0,
+        "desc": "慢性病数量/Number of chronic diseases (integer)"
+    },
+    "hearing_ability": {
+        "type": "categorical",
+        "options": [1, 2, 3, 4, 5],
+        "desc": "听力/Hearing ability (1-5: 很差/Very poor 到 很好/Very good)"
+    }
 }
+
+
 
 # 界面布局
 st.title("Depression Risk-Prediction Model with SHAP Visualization")
