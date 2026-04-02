@@ -3,14 +3,45 @@ import joblib
 import numpy as np
 import pandas as pd
 import shap
+import matplotlib
 import matplotlib.pyplot as plt
-import catboost
 from matplotlib import font_manager
+import catboost
 
+# -----------------------------
+# Matplotlib 中文字体设置
+# -----------------------------
+# 尽量使用系统中存在的中文字体；如无则回退到默认字体
+possible_fonts = [
+    "SimHei",
+    "Microsoft YaHei",
+    "Noto Sans CJK SC",
+    "WenQuanYi Micro Hei",
+    "PingFang SC"
+]
+
+available_fonts = {f.name for f in font_manager.fontManager.ttflist}
+chosen_font = None
+for font in possible_fonts:
+    if font in available_fonts:
+        chosen_font = font
+        break
+
+if chosen_font:
+    matplotlib.rcParams["font.sans-serif"] = [chosen_font]
+else:
+    matplotlib.rcParams["font.sans-serif"] = ["DejaVu Sans"]
+
+matplotlib.rcParams["axes.unicode_minus"] = False
+
+# -----------------------------
 # 模型加载
-model = joblib.load('cat.pkl')
+# -----------------------------
+model = joblib.load("cat.pkl")
 
+# -----------------------------
 # 特征定义
+# -----------------------------
 feature_ranges = {
     "gender": {
         "type": "categorical",
@@ -82,10 +113,15 @@ feature_ranges = {
     }
 }
 
-# 界面布局
+# -----------------------------
+# 页面标题
+# -----------------------------
 st.title("Depression Risk-Prediction Model with SHAP Visualization")
 st.subheader("抑郁风险预测模型与 SHAP 可视化")
 
+# -----------------------------
+# 隐私政策
+# -----------------------------
 st.info(
     """
 **隐私与数据保存政策 / Privacy & Data Retention Policy**
@@ -100,6 +136,9 @@ Please do not enter any personally identifiable sensitive information.
     """
 )
 
+# -----------------------------
+# 免责声明
+# -----------------------------
 st.warning(
     """
 **免责声明 / Disclaimer**
@@ -115,7 +154,9 @@ Final diagnosis and treatment decisions should be made by **qualified clinical p
 
 st.header("Enter the following feature values / 请输入以下特征值：")
 
+# -----------------------------
 # 输入表单
+# -----------------------------
 feature_values = []
 for feature, properties in feature_ranges.items():
     if properties["type"] == "numerical":
@@ -138,13 +179,14 @@ for feature, properties in feature_ranges.items():
 
 features = np.array([feature_values])
 
+# -----------------------------
 # 预测与解释
+# -----------------------------
 if st.button("Predict / 预测"):
     predicted_class = model.predict(features)[0]
     predicted_proba = model.predict_proba(features)[0]
     probability = predicted_proba[predicted_class] * 100
 
-    # 结果显示
     risk_label_en = "High risk" if predicted_class == 1 else "Low risk"
     risk_label_cn = "高风险" if predicted_class == 1 else "低风险"
 
@@ -157,13 +199,14 @@ if st.button("Predict / 预测"):
         text_en + "\n" + text_cn,
         fontsize=14,
         ha='center',
-        va='center',
-        fontname='Arial'
+        va='center'
     )
     ax.axis('off')
     st.pyplot(fig)
 
-    # SHAP解释
+    # -----------------------------
+    # SHAP 解释
+    # -----------------------------
     explainer = shap.TreeExplainer(model)
     feature_df = pd.DataFrame([feature_values], columns=feature_ranges.keys())
     shap_values = explainer.shap_values(feature_df)
