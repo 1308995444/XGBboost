@@ -1,0 +1,13 @@
+FINAL STREAMLIT INFERENCE ARTIFACT VERIFICATION
+Source bundle: C:\Users\Administrator\8.8\catboost_smotenc_oof_bundle.joblib
+Source bundle SHA-256: 75CCA7B55776699B425498C9C93C91257B1ADAAF768738E7B0BC9310B5438D74
+Inference model SHA-256: F735E253E4AF3C52B63F371DFE2C1107607EA26D9A3B858AE1B6998D2A70C269
+Final classifier trees: 3000
+Final classifier parameters: {'iterations': 3000, 'learning_rate': 0.03, 'depth': 2, 'l2_leaf_reg': 5, 'random_seed': 42, 'use_best_model': False, 'verbose': False, 'eval_metric': 'AUC', 'allow_writing_files': False, 'subsample': 0.6, 'min_data_in_leaf': 20}
+Frozen threshold: 0.2993037568437512
+Probability-equivalence records: 1000
+Maximum absolute probability difference: 0.0
+PASS: inference artifact probabilities equal the final full-bundle probabilities.
+Old cat.pkl trees: 1000
+Old cat.pkl parameters: {'learning_rate': 0.03, 'depth': 2, 'l2_leaf_reg': 5, 'subsample': 0.6, 'min_data_in_leaf': 20}
+CONCLUSION: the old cat.pkl is not the final frozen deployment model.

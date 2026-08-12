@@ -1,0 +1,262 @@
+{
+  "release_version": "1.0.1-online-inference",
+  "source_analysis_release": "1.0.1",
+  "model_name": "CatBoost_SMOTENC_2018_development_inference_only",
+  "features": [
+    "gender",
+    "gastric_disease",
+    "pain",
+    "sleep_duration_night",
+    "retirement_status",
+    "self_rated_health",
+    "adl_disability",
+    "future_hope",
+    "life_satisfaction",
+    "education_level",
+    "chronic_disease_count",
+    "hearing_ability"
+  ],
+  "frozen_threshold": 0.2993037568437512,
+  "threshold_rule": "Youden from repeated 2018 training OOF probabilities",
+  "primary_imbalance_arm": "smotenc_only",
+  "transformed_feature_count": 25,
+  "model_parameters": {
+    "iterations": 3000,
+    "learning_rate": 0.03,
+    "depth": 2,
+    "l2_leaf_reg": 5,
+    "random_seed": 42,
+    "use_best_model": false,
+    "verbose": false,
+    "eval_metric": "AUC",
+    "allow_writing_files": false,
+    "subsample": 0.6,
+    "min_data_in_leaf": 20
+  },
+  "model_tree_count": 3000,
+  "model_file": "final_catboost_inference.cbm",
+  "model_sha256": "F735E253E4AF3C52B63F371DFE2C1107607EA26D9A3B858AE1B6998D2A70C269",
+  "source_bundle_sha256": "75CCA7B55776699B425498C9C93C91257B1ADAAF768738E7B0BC9310B5438D74",
+  "preprocessing": {
+    "categorical_order": [
+      "gender",
+      "gastric_disease",
+      "pain",
+      "retirement_status",
+      "self_rated_health",
+      "future_hope",
+      "life_satisfaction",
+      "education_level",
+      "hearing_ability"
+    ],
+    "categorical_categories": {
+      "gender": [
+        0,
+        1
+      ],
+      "gastric_disease": [
+        0,
+        1
+      ],
+      "pain": [
+        0,
+        1
+      ],
+      "retirement_status": [
+        0,
+        1
+      ],
+      "self_rated_health": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "future_hope": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "life_satisfaction": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "education_level": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "hearing_ability": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    "one_hot_drop": "first",
+    "numerical_order": [
+      "sleep_duration_night",
+      "adl_disability",
+      "chronic_disease_count"
+    ],
+    "numerical_mean": {
+      "sleep_duration_night": 6.178719397318738,
+      "adl_disability": 0.3046139359698682,
+      "chronic_disease_count": 2.7603578154425614
+    },
+    "numerical_scale": {
+      "sleep_duration_night": 1.6328256613826742,
+      "adl_disability": 0.8733107943967782,
+      "chronic_disease_count": 1.7775305729808082
+    }
+  },
+  "input_schema": {
+    "gender": {
+      "allowed_values": [
+        0,
+        1
+      ]
+    },
+    "gastric_disease": {
+      "allowed_values": [
+        0,
+        1
+      ]
+    },
+    "pain": {
+      "allowed_values": [
+        0,
+        1
+      ]
+    },
+    "sleep_duration_night": {
+      "minimum_exclusive": 2,
+      "maximum_exclusive": 15
+    },
+    "retirement_status": {
+      "allowed_values": [
+        0,
+        1
+      ]
+    },
+    "self_rated_health": {
+      "allowed_values": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    "adl_disability": {
+      "allowed_values": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ]
+    },
+    "future_hope": {
+      "allowed_values": [
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    "life_satisfaction": {
+      "allowed_values": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    "education_level": {
+      "allowed_values": [
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    "chronic_disease_count": {
+      "integer": true,
+      "minimum": 1,
+      "maximum": 13
+    },
+    "hearing_ability": {
+      "allowed_values": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    }
+  },
+  "missing_input_policy": "reject; no silent defaulting or online imputation",
+  "shap_feature_groups": {
+    "gender": [
+      0
+    ],
+    "gastric_disease": [
+      1
+    ],
+    "pain": [
+      2
+    ],
+    "retirement_status": [
+      3
+    ],
+    "self_rated_health": [
+      4,
+      5,
+      6,
+      7
+    ],
+    "future_hope": [
+      8,
+      9,
+      10
+    ],
+    "life_satisfaction": [
+      11,
+      12,
+      13,
+      14
+    ],
+    "education_level": [
+      15,
+      16,
+      17
+    ],
+    "hearing_ability": [
+      18,
+      19,
+      20,
+      21
+    ],
+    "sleep_duration_night": [
+      22
+    ],
+    "adl_disability": [
+      23
+    ],
+    "chronic_disease_count": [
+      24
+    ]
+  },
+  "artifact_boundary": "Inference-only CatBoost binary plus aggregate preprocessing parameters; no SMOTENC nearest-neighbour state or participant-level data."
+}
